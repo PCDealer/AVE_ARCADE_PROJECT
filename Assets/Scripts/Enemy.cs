@@ -25,6 +25,10 @@ public class Enemy : MonoBehaviour
     private bool isDetonating = false;
     private bool hasExploded = false;
 
+    [Header("Audio Settings")]
+    public AudioClip armorHitSound;
+    [Range(0, 1)] public float sfxVolume = 1f;
+
     [Header("Technical References")]
     public Transform player;
     public GameObject deathEffect;
@@ -123,6 +127,12 @@ void Update()
             {
                 Vector2 pushDir = (transform.position - other.transform.position).normalized;
                 ApplyKnockback(pushDir);
+
+                if (armorHitSound != null)
+                {
+                    AudioSource.PlayClipAtPoint(armorHitSound, Camera.main.transform.position, sfxVolume);
+                }
+                
                 Destroy(other.gameObject); 
                 StartCoroutine(FlashWhite()); 
                 return; 
